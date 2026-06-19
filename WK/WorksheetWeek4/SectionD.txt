@@ -1,0 +1,59 @@
+test> use HSM;
+switched to db HSM
+HSM> db.patients.insertOne({ patient_id:1,patient_name:'Rohan',patient_age:23,gender:'Male',phone_number :9874563210 });
+{
+  acknowledged: true,
+  insertedId: ObjectId('6a34ecc052882e5460abc114')
+}
+HSM> db.patients.find();
+[
+  {
+    _id: ObjectId('6a34ecc052882e5460abc114'),
+    patient_id: 1,
+    patient_name: 'Rohan',
+    patient_age: 23,
+    gender: 'Male',
+    phone_number: 9874563210
+  }
+]
+
+HSM> db.createCollection("appoitments")
+{ ok: 1 }
+HSM> show collections
+appoitments
+patients
+HSM>
+
+
+HSM> db.patients.updateOne({patient_id:1},{$set:{age:25}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+HSM>
+
+
+HSM> db.patients.deleteOne({patient_id:1});
+{ acknowledged: true, deletedCount: 1 }
+HSM> db.patients.find()
+
+HSM>
+
+
+HSM> db.patients.aggregate([
+|     {
+|         $group: {
+|             _id: "$city",
+|             total_patients: { $sum: 1 }
+|         }
+|     }
+| ])
+[
+  { _id: 'Chennai', total_patients: 2 },
+  { _id: 'Hyderabad', total_patients: 2 },
+  { _id: 'Bangalore', total_patients: 1 }
+]
+HSM>
